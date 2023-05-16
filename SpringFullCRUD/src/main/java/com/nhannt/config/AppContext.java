@@ -1,6 +1,7 @@
 package com.nhannt.config;
 
 
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,15 +24,16 @@ public class AppContext {
     private Environment environment;
 
     @Bean
-    public LocalSessionFactoryBean sesssionFactory(){
+    public LocalSessionFactoryBean sessionFactory(){
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sesssionFactory().setPackagesToScan(new String[]{
+        sessionFactory.setPackagesToScan(new String[]{
                 "com.nhannt.entity"
         });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
+
 
 
     @Bean
@@ -57,7 +59,7 @@ public class AppContext {
     @Bean
     public HibernateTransactionManager getTransactionManager(){
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sesssionFactory().getObject());
+        transactionManager.setSessionFactory(sessionFactory().getObject());
         return transactionManager;
     }
 
